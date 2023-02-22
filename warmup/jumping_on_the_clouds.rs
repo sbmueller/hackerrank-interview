@@ -12,19 +12,13 @@ use std::io::{self, BufRead, Write};
 fn jumpingOnClouds(c: &[i32]) -> i32 {
     let mut jumps = 0;
     let mut index = 0;
-    loop {
+    while index < c.len() - 1 {
         if (index + 2) < c.len() && c[index + 2] == 0 {
-            index += 2;
-            jumps += 1;
-        } else {
             index += 1;
-            jumps += 1;
         }
-        if index == c.len() - 1 {
-            break;
-        }
+        index += 1;
+        jumps += 1;
     }
-
     jumps
 }
 
