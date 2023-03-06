@@ -9,6 +9,7 @@ use std::io::{self, BufRead, Write};
  * The function is expected to return an INTEGER.
  * The function accepts STRING s as parameter.
  */
+
 /// Sort a string by its characters
 fn sort_string(s: &str) -> String {
     let mut chars: Vec<char> = s.chars().collect();
@@ -24,12 +25,12 @@ fn sherlock_and_anagrams(s: &str) -> i32 {
             .windows(l) // windows of size l over the input string
             .map(|v| v.iter().collect::<String>()) // rebuild substrings from char arrays
             .for_each(|substring| {
-                *anagrams.entry(sort_string(&substring)).or_insert(-1) += 1; // increase substring
-                                                                             // counter
+                *anagrams.entry(sort_string(&substring)).or_insert(0) += 1; // increase substring
+                                                                            // counter
             });
     }
-    anagrams.values().map(|&v| (0..=v).sum::<i32>()).sum() // Sum over all anagram possibilities
-                                                           // and all anagrams
+    anagrams.values().map(|&v| (0..v).sum::<i32>()).sum() // Sum over all anagram possibilities
+                                                          // and all anagrams
 }
 
 fn main() {
@@ -52,5 +53,27 @@ fn main() {
         let result = sherlock_and_anagrams(&s);
 
         writeln!(&mut fptr, "{}", result).ok();
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn sample_input_1() {
+        assert_eq!(sherlock_and_anagrams("abba"), 4);
+        assert_eq!(sherlock_and_anagrams("abcd"), 0);
+    }
+
+    #[test]
+    fn sample_input_2() {
+        assert_eq!(sherlock_and_anagrams("ifailuhkqq"), 3);
+        assert_eq!(sherlock_and_anagrams("kkkk"), 10);
+    }
+
+    #[test]
+    fn sample_input_3() {
+        assert_eq!(sherlock_and_anagrams("cdcd"), 5);
     }
 }
